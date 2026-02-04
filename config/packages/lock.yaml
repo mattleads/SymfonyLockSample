@@ -1,0 +1,22 @@
+framework:
+    lock:
+        # Default store (good for single-server setups)
+        enabled: true
+
+        # Named lockers
+        resources:
+            # Critical business locks (Distributed)
+            order_processing: '%env(REDIS_DSN)%'
+
+            # CLI command locks (Local is usually fine)
+            cron_jobs:
+                - 'flock'
+
+            # New in 7.4: DynamoDB for serverless architectures
+            # This is commented out as it requires AWS credentials and the symfony/amazon-dynamo-db-lock package.
+            # To use it, install the package and configure your AWS credentials.
+            # invoice_generation:
+            #     - 'dynamodb://default/lock_table'
+
+            # For the attribute example, we'll just use redis.
+            invoice_generation: '%env(REDIS_DSN)%'
